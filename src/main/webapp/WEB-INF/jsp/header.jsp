@@ -28,12 +28,12 @@ float: left
 <h1 align="center">WELCOME TO ICICI</h1>
 <nav>
 <ul>
-<li><a href="home.jsp">Home</a></li>
-<li><a href="login.jsp">Login</a></li>
-<li><a href="edit.jsp">Edit_profile</a></li>
- <li><a href="transfer.jsp">Transfer_money</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="editPage">Edit_profile</a></li>
+ <li><a href="transfer">Transfer_money</a></li>
  <li><a href="balance">Balance_Enquiry</a></li>
- <li><a href="changePassword.jsp">changePassword</a>
+ <li><a href="changePassword">changePassword</a>
  <li><a href="logout">logout</a>
 </ul>
 </nav>

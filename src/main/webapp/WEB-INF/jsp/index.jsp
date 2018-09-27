@@ -11,13 +11,13 @@
 
 
 <%@include file="header.jsp"%>
-	<c:if test="${sessionScope.customer.customerId != null}">
+	<%-- <c:if test="${sessionScope.customer.customerId != null}"> --%>
 		<h3>${sessionScope.customer.customerId}</h3>
 		<h3>${sessionScope.customer.customerName}</h3>
 		<h3>${sessionScope.customer.email}</h3>
-		<h3>${sessionScope.customer.account.getBalance()}</h3>
+		<h3>${sessionScope.customer.account.balance}</h3>
 		<h3>${sessionScope.customer.address}</h3>
-	</c:if>
+	
 	<c:if test="${sessionScope.customer.customerId == null}">
 
 </c:if>

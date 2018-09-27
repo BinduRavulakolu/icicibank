@@ -12,56 +12,63 @@ import com.capgemini.icicibank.entities.BankAccount;
 import com.capgemini.icicibank.entities.Customer;
 
 import com.capgemini.icicibank.repository.CustomerRepository;
+
 @Repository
 public class CustomerRepositoryImpl implements CustomerRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
 	@Override
-	public Customer authenticate(Customer customer)  {
-	return jdbcTemplate.queryForObject("SELECT * FROM customers inner join bankaccounts on customers.customer_id = bankaccounts.customer_id WHERE customers.customer_id=? AND customers.customer_password=?",new Object[] {customer.getCustomerId(),customer.getPassword()},Customer.class);
+	public Customer authenticate(Customer customer) {
 		
+		return jdbcTemplate.queryForObject(
+				"select * from customers inner join bankaccounts on bankaccounts.customer_id=customers.customer_id where customers.customer_id=? and customers.customer_password=?",
+				new Object[] { customer.getCustomerId(), customer.getPassword() }, new CustomerRowMapper());
 
 	}
 
 	@Override
 	public Customer updateProfile(Customer customer) {
-		int count=jdbcTemplate.update("update customers set customer_name=?,customer_address=?,customer_email=? where customer_id=?", new Object[] {customer.getCustomerName(),customer.getAddress(),customer.getEmail(),customer.getCustomerId()});
-		if(count!=0)
-		{
+		int count = jdbcTemplate.update(
+				"update customers set customer_name=?,customer_address=?,customer_email=? where customer_id=?",
+				new Object[] { customer.getCustomerName(), customer.getAddress(), customer.getEmail(),
+						customer.getCustomerId() },
+				new CustomerRowMapper());
+		if (count != 0) {
 			return customer;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
 	@Override
 	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
-		int count=jdbcTemplate.update("update customers set customer_password=? where customer_id=?", new Object[] {newPassword,customer.getCustomerId()});
-		if(count!=0)
-		{
+		int count = jdbcTemplate.update("update customers set customer_password=? where customer_id=?",
+				new Object[] { newPassword, customer.getCustomerId() });
+		if (count != 0) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
-	/*class CustomerRowMapper implements RowMapper<Customer>{
+
+	class CustomerRowMapper implements RowMapper<Customer> {
 		@Override
-			public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				
-			Customer customer=new Customer();
-			
+		public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+			Customer customer = new Customer();
+
 			customer.setCustomerId(rs.getInt(1));
 			customer.setCustomerName(rs.getString(2));
 			customer.setPassword(rs.getString(3));
-		customer.setEmail(rs.getString(4));
-		customer.setAddress(rs.getString(5));
-		customer.setDateOfBirth(rs.getDate(6));
-					return customer;
-				}*/
+			customer.setEmail(rs.getString(4));
+			customer.setAddress(rs.getString(5));
+			customer.setDateOfBirth(rs.getDate(6).toLocalDate());
+			
+			BankAccount account = new BankAccount(rs.getLong(8), rs.getString(9), rs.getDouble(10));
+			customer.setAccount(account);
+			return customer;
+		}
 
-//	}
+	}
 }

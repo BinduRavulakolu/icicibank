@@ -9,14 +9,14 @@ public class Customer {
 	 private String password;
 	 private String email;
 	 private String address;
-	 private Date dateOfBirth;
+	 private LocalDate dateOfBirth;
 	private BankAccount account;
 	public Customer() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Customer(int customerId, String customerName, String password, String email, String address,
-			Date dateOfBirth, BankAccount account) {
+			LocalDate dateOfBirth, BankAccount account) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
@@ -56,10 +56,10 @@ public class Customer {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(Date date) {
+	public void setDateOfBirth(LocalDate date) {
 		this.dateOfBirth = date;
 	}
 	public BankAccount getAccount() {
@@ -68,4 +68,12 @@ public class Customer {
 	public void setAccount(BankAccount account) {
 		this.account = account;
 	}
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", password=" + password
+				+ ", email=" + email + ", address=" + address + ", dateOfBirth=" + dateOfBirth + ", account=" + account
+				+ "]";
+	}
+	
+	
 }

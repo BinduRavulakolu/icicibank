@@ -9,6 +9,7 @@
 </head>
 <body>
 <%@include file="header.jsp" %>
-<h1>${requestScope.balance}</h1>
+
+<h3>${balance}</h3>
 </body>
 </html>
