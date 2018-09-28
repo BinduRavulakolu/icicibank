@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.capgemini.icicibank.entities.BankAccount;
 import com.capgemini.icicibank.entities.Customer;
@@ -41,8 +42,18 @@ public class BankAccountController {
 		model.addAttribute("balance",balance);
 		return "balance";
 	}
-	
-	
-
+	@RequestMapping(value="/fundTransferPage",method=RequestMethod.GET)
+	public String getFundTransferPage() {
+		return "transfer";
+	}
+	@RequestMapping(value="/transfer",method=RequestMethod.POST)
+public String fundTransfer(HttpSession session,HttpServletRequest request,Model model,@RequestParam long fromAccount,@RequestParam long toAccount,@RequestParam double amount) {
+		Customer customer=(Customer) session.getAttribute("customer");
+		bankaccountService.fundTransfer(fromAccount, toAccount, amount);
+		session.setAttribute("customer", customer);
+		request.setAttribute("success", true);
+	return "success";
+		
+	}
 
 }

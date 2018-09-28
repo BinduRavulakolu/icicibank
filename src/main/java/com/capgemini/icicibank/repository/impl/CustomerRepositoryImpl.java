@@ -32,12 +32,11 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 		int count = jdbcTemplate.update(
 				"update customers set customer_name=?,customer_address=?,customer_email=? where customer_id=?",
 				new Object[] { customer.getCustomerName(), customer.getAddress(), customer.getEmail(),
-						customer.getCustomerId() },
-				new CustomerRowMapper());
+						customer.getCustomerId() });
 		if (count != 0) {
 			return customer;
 		} else {
-			return null;
+			return getCustomer(customer.getCustomerId());
 		}
 	}
 
@@ -69,6 +68,13 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 			customer.setAccount(account);
 			return customer;
 		}
+
+	}
+	public Customer getCustomer(int customerId) {
+		
+		return jdbcTemplate.queryForObject(
+				"select * from customers inner join bankaccounts on bankaccounts.customer_id=customers.customer_id where customers.customer_id=?",
+				new Object[] { customerId }, new CustomerRowMapper());
 
 	}
 }

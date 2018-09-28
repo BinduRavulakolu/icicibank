@@ -31,9 +31,9 @@ float: left
 <li><a href="index">Home</a></li>
 <li><a href="login">Login</a></li>
 <li><a href="editPage">Edit_profile</a></li>
- <li><a href="transfer">Transfer_money</a></li>
+ <li><a href="fundTransferPage">Transfer_money</a></li>
  <li><a href="balance">Balance_Enquiry</a></li>
- <li><a href="changePassword">changePassword</a>
+ <li><a href="changePasswordPage">changePassword</a>
  <li><a href="logout">logout</a>
 </ul>
 </nav>

@@ -7,7 +7,7 @@
 <title>Logout Page</title>
 </head>
 <body>
-<form action="logout" method="get">
+<form action="index" method="get">
 <input type="button" name="logout"/>
 </form>
 </body>
