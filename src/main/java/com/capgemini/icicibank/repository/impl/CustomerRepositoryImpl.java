@@ -33,8 +33,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	}
 
 	@Override
-	public Customer updateProfile(Customer customer) {
-		int count = jdbcTemplate.update(
+	public Customer updateProfile(Customer customer) throws DataAccessException{
+		try{int count = jdbcTemplate.update(
 				"update customers set customer_name=?,customer_address=?,customer_email=? where customer_id=?",
 				new Object[] { customer.getCustomerName(), customer.getAddress(), customer.getEmail(),
 						customer.getCustomerId() });
@@ -43,18 +43,32 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 		} else {
 			return getCustomer(customer.getCustomerId());
 		}
+		}
+		catch(DataAccessException ex)
+		{
+			ex.initCause(new EmptyResultDataAccessException("not found", 1));
+			throw ex;
+			
+		}
 	}
 
 	@Override
-	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
-		int count = jdbcTemplate.update("update customers set customer_password=? where customer_id=?",
+	public boolean updatePassword(Customer customer, String oldPassword, String newPassword)  throws DataAccessException {
+		try{int count = jdbcTemplate.update("update customers set customer_password=? where customer_id=?",
 				new Object[] { newPassword, customer.getCustomerId() });
 		if (count != 0) {
 			return true;
 		} else {
 			return false;
 		}
-	}
+		}
+		catch(DataAccessException ex)
+		{
+			ex.initCause(new EmptyResultDataAccessException("not changed", 1));
+			throw ex;
+		}
+		}
+
 
 	class CustomerRowMapper implements RowMapper<Customer> {
 		@Override

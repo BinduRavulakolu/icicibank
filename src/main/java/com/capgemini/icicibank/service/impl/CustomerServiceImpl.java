@@ -5,6 +5,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.capgemini.icicibank.entities.Customer;
+import com.capgemini.icicibank.exceptions.PasswordChangeException;
+import com.capgemini.icicibank.exceptions.UpdationFailedException;
 import com.capgemini.icicibank.exceptions.UserNotFoundException;
 import com.capgemini.icicibank.repository.CustomerRepository;
 import com.capgemini.icicibank.service.CustomerService;
@@ -26,15 +28,26 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer updateProfile(Customer customer) {
-		// TODO Auto-generated method stub
-		return customerRepository.updateProfile(customer);
+	public Customer updateProfile(Customer customer) throws UpdationFailedException {
+		try{
+			return customerRepository.updateProfile(customer);
+		}
+		catch(DataAccessException ex)
+		{
+			UpdationFailedException e=new UpdationFailedException("Updation was failed");
+			e.initCause(ex);
+			throw e;
+		}
 	}
+	
 
 	@Override
 	public boolean updatePassword(Customer customer, String oldPassword, String newPassword) {
-		// TODO Auto-generated method stub
-		return customerRepository.updatePassword(customer, oldPassword, newPassword);
+		
+			return customerRepository.updatePassword(customer, oldPassword, newPassword);
+	
+		
+
 	}
 
 }

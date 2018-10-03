@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.capgemini.icicibank.exceptions.LowBalanceException;
+import com.capgemini.icicibank.exceptions.UpdationFailedException;
 import com.capgemini.icicibank.exceptions.UserNotFoundException;
 
 @ControllerAdvice
@@ -16,6 +17,7 @@ public class ExceptionController {
 		
 //		  request.setAttribute("success", false);
 	      request.setAttribute("success", ex.toString());
+	      System.out.println(ex.getCause());
 	        return "success";
 	}
 	 
@@ -25,6 +27,13 @@ public class ExceptionController {
 //		  request.setAttribute("success", false);
 	      request.setAttribute("success", ex.toString());
 	        return "success";
+	}
+	
+	@ExceptionHandler(value=UpdationFailedException.class)
+	public String handleException3(UpdationFailedException ex,HttpServletRequest request) {
+	    request.setAttribute("success", ex.toString());	
+		return "success";
+		
 	}
 	 
 }
