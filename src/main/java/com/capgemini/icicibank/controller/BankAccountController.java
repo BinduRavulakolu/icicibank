@@ -33,13 +33,10 @@ public class BankAccountController {
 	
 	@RequestMapping(value ="/balance", method=RequestMethod.GET)
 	public String getBalancePage(HttpSession session, HttpServletRequest request,Model model) {
-		BankAccount account;
 		session= request.getSession();
 		Customer customer=(Customer) session.getAttribute("customer");
-		System.out.println("balancd"+customer);
-	   double balance= bankaccountService.getBalance(customer.getAccount().getAccountId());
-	   System.out.println(balance);
-		model.addAttribute("balance",balance);
+		double balance= bankaccountService.getBalance(customer.getAccount().getAccountId());
+	  model.addAttribute("balance",balance);
 		return "balance";
 	}
 	@RequestMapping(value="/fundTransferPage",method=RequestMethod.GET)
@@ -47,12 +44,12 @@ public class BankAccountController {
 		return "transfer";
 	}
 	@RequestMapping(value="/transfer",method=RequestMethod.POST)
-public String fundTransfer(HttpSession session,HttpServletRequest request,Model model,@RequestParam long fromAccount,@RequestParam long toAccount,@RequestParam double amount) {
+    public String fundTransfer(HttpSession session,HttpServletRequest request,Model model,@RequestParam long fromAccount,@RequestParam long toAccount,@RequestParam double amount) {
 		Customer customer=(Customer) session.getAttribute("customer");
 		bankaccountService.fundTransfer(fromAccount, toAccount, amount);
 		session.setAttribute("customer", customer);
 		request.setAttribute("success", true);
-	return "success";
+	    return "success";
 		
 	}
 

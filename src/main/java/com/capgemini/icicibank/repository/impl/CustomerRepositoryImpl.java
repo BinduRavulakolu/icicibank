@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,12 +21,15 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
-	public Customer authenticate(Customer customer) {
-		
-		return jdbcTemplate.queryForObject(
-				"select * from customers inner join bankaccounts on bankaccounts.customer_id=customers.customer_id where customers.customer_id=? and customers.customer_password=?",
-				new Object[] { customer.getCustomerId(), customer.getPassword() }, new CustomerRowMapper());
-
+	public Customer authenticate(Customer customer) throws DataAccessException {
+		try {
+			return jdbcTemplate.queryForObject(
+					"select * from customers inner join bankaccounts on bankaccounts.customer_id=customers.customer_id where customers.customer_id=? and customers.customer_password=?",
+					new Object[] { customer.getCustomerId(), customer.getPassword() }, new CustomerRowMapper());
+		} catch (DataAccessException e) {
+			e.initCause(new EmptyResultDataAccessException("not found", 1));
+			throw e;
+		}
 	}
 
 	@Override
@@ -63,15 +68,16 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 			customer.setEmail(rs.getString(4));
 			customer.setAddress(rs.getString(5));
 			customer.setDateOfBirth(rs.getDate(6).toLocalDate());
-			
+
 			BankAccount account = new BankAccount(rs.getLong(8), rs.getString(9), rs.getDouble(10));
 			customer.setAccount(account);
 			return customer;
 		}
 
 	}
+
 	public Customer getCustomer(int customerId) {
-		
+
 		return jdbcTemplate.queryForObject(
 				"select * from customers inner join bankaccounts on bankaccounts.customer_id=customers.customer_id where customers.customer_id=?",
 				new Object[] { customerId }, new CustomerRowMapper());

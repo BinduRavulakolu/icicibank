@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +8,8 @@
 <title>Edit Page</title>
 </head>
 <body>
-<%@include file="header.jsp" %>
-<form action="edit" method="post">
+	<%@include file="header.jsp"%>
+	<%-- <form action="edit" method="post">
 <label>Customer id:</label>
 <input type="number" value="${customer.customerId}" name="custId" readonly/>
 <br><br>
@@ -30,6 +30,37 @@
 <input type="date" name="dob" value="${customer.dateOfBirth}" required />
 <br><br>
 <input type="submit" value="edit"/>
-</form>
+</form>  --%>
+
+	<form:form action="edit" method="post" modelAttribute="customer">
+		<form:label path="customerId">Customer id:</form:label>
+		<form:input type="number" path="customerId"  />
+		<br>
+		<br>
+		<form:label path="customerName">Customer Name:</form:label>
+		<form:input type="text" path="customerName"  />
+		<br>
+		<br>
+		<form:label path="password">Password :</form:label>
+		<form:input type="password" path="password"  />
+		<br>
+		<br>
+
+		<form:label path="email">Email :</form:label>
+		<form:input type="email" path="email"  />
+		<br>
+		<br>
+		<form:label path="address">Address :</form:label>
+		<form:input type="text" path="address"  />
+		<br>
+		<br>
+		<form:label path="dateOfBirth">DateOfBirth:</form:label>
+		<form:input path="dateOfBirth"  />
+		<br>
+		<br>
+		<input type="submit" value="edit" />
+	</form:form>
+
+
 </body>
 </html>
